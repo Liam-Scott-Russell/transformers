@@ -48,9 +48,9 @@ from utils_qa import postprocess_qa_predictions
 
 
 # Will error if the minimal version of Transformers is not installed. Remove at your own risks.
-check_min_version("4.12.0.dev0")
+# check_min_version("4.12.0.dev0")
 
-require_version("datasets>=1.8.0", "To fix: pip install -r examples/pytorch/question-answering/requirements.txt")
+# require_version("datasets>=1.8.0", "To fix: pip install -r examples/pytorch/question-answering/requirements.txt")
 
 logger = logging.getLogger(__name__)
 
@@ -264,6 +264,11 @@ def main():
         raw_datasets = load_dataset(
             data_args.dataset_name, data_args.dataset_config_name, cache_dir=model_args.cache_dir
         )
+        # CUAD dataset calls "validation" dataset "test"
+        if (data_args.dataset_name == "cuad" and "validation" not in raw_datasets):
+            raw_datasets["validation"] = raw_datasets["test"]
+            del raw_datasets["test"]
+            logger.info('Renaming "test" dataset to "validation"')
     else:
         data_files = {}
         if data_args.train_file is not None:
