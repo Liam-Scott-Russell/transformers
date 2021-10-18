@@ -579,7 +579,7 @@ def main():
         eval_examples=eval_examples if training_args.do_eval else None,
         tokenizer=tokenizer,
         data_collator=data_collator,
-        post_process_function=post_processing_function,
+        # post_process_function=post_processing_function,
         compute_metrics=compute_metrics,
     )
 
